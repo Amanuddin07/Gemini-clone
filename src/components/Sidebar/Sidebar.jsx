@@ -5,67 +5,63 @@ import { Context } from "../../context/Context";
 
 const Sidebar = () => {
   const [extended, setExtended] = useState(false);
-  const { onSent, prevPrompts, newChat, clearHistory } =
-    useContext(Context);
+  const { onSent, prevPrompts, setRecentPrompt,newChat } = useContext(Context);
+
+  const loadPrompt = async (prompt) => {
+    setRecentPrompt(prompt);
+    await onSent(prompt);
+  }
 
   return (
     <div className="sidebar">
       <div className="top">
         <img
-          src={assets.menu_icon}
-          alt="menu"
+          onClick={() => setExtended((prev) => !prev)}
           className="menu"
-          onClick={() => setExtended(prev => !prev)}
+          src={assets.menu_icon}
+          alt="Menu Icon"
         />
-
-        <div className="new-chat" onClick={newChat}>
-          <img src={assets.plus_icon} alt="plus" />
-          {extended && <p>New Chat</p>}
+        <div onClick={()=> newChat()} className="new-chat">
+          <img src={assets.plus_icon} alt="plus icon" />
+          {extended ? <p>New Chat</p> : null}
         </div>
 
-        {extended && (
+        {extended ? (
           <div className="recent">
             <p className="recent-title">Recent</p>
-
-            {prevPrompts.map((item, index) => (
-              <div
-                key={index}
-                className="recent-entry"
-                onClick={() => onSent(item)}
-              >
-                <img src={assets.message_icon} alt="msg" />
-                <p>
-                  {item.length > 25
-                    ? item.slice(0, 25) + "..."
-                    : item}
-                </p>
-              </div>
-            ))}
-
-            {prevPrompts.length > 0 && (
-              <button
-                className="clear-history"
-                onClick={clearHistory}
-              >
-                Clear History
-              </button>
-            )}
+            {prevPrompts.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  className="recent-entry"
+                  onClickCapture={() => loadPrompt(item)}
+                  // onClick={() => {
+                  //   setRecentPrompt(item);
+                  //   onSent(item);
+                  //   onSent(item);
+                  // }}
+                >
+                  <img src={assets.message_icon} alt="message icon" />
+                  <p>{item} ...</p>
+                </div>
+              );
+            })}
           </div>
-        )}
+        ) : null}
       </div>
 
       <div className="bottom">
         <div className="bottom-item recent-entry">
-          <img src={assets.question_icon} alt="help" />
-          {extended && <p>Help</p>}
+          <img src={assets.question_icon} alt="question icon" />
+          {extended ? <p>Help</p> : null}
         </div>
         <div className="bottom-item recent-entry">
-          <img src={assets.history_icon} alt="activity" />
-          {extended && <p>Activity</p>}
+          <img src={assets.history_icon} alt="history icon" />
+          {extended ? <p>Activity</p> : null}
         </div>
         <div className="bottom-item recent-entry">
-          <img src={assets.setting_icon} alt="settings" />
-          {extended && <p>Settings</p>}
+          <img src={assets.setting_icon} alt="setting icon" />
+          {extended ? <p>Settings</p> : null}
         </div>
       </div>
     </div>
