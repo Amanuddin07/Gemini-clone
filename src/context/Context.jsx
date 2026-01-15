@@ -32,7 +32,8 @@ const ContextProvider = ({ children }) => {
     try {
       const response = await main(prompt);
       setResultData(response);
-    } catch {
+    } catch (error) {
+      console.error("Error in main:", error);
       setResultData("An error occurred while fetching the response.");
     } finally {
       setLoading(false);
