@@ -27,5 +27,3 @@ Gemini is a frontend-focused AI chat application built with React that leverages
 * AI Integration: Google Gemini (GenAI) API
 
 * Persistence: localStorage for chat history
-
-* Deployment: Can be hosted on Netlify, Vercel, or any static site hosting
